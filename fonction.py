@@ -1,13 +1,13 @@
 import time
+import pickle
             
 def chrono():
     temps = 0
-    intervale = 1
     
     while True:
         # Création de temps
         temps += 1
-        time.sleep(intervale)
+        time.sleep(1)
         
         # Afichage du temps        
         heure = temps // 3600
@@ -18,10 +18,8 @@ def chrono():
         print(f"{heure}:{minute}:{seconde}")
         
 def creation_profile():
-    """ Cette fonction aura pour mission d'ajouter un nouveau profile """
-    
+    # Cette fonction aura pour mission d'ajouter un nouveau profile
     # Création de la basse de doonés qui va contenir nos profile et temps
-    donnees_profile = {}
     nom_du_profile = input("Veuillez entrer le nom de vôtre nouveau profile !")
     
     # On vérifie si le nom du profile contient au moin 4 caractére et qu'il ne contient pas de caratére spécial
@@ -33,10 +31,6 @@ def creation_profile():
             print("Les caractéres spéciaux ne sont par toléré")
             nom_du_profile = input("Veuillez entrer le nom de vôtre nouveau profile sans caractére spéciale ")
         else:
-            donnees_profile[nom_du_profile] = None
             print("Vous venez de crée votre profile")
-            print(donnees_profile)
-            break
-        
-
-creation_profile()
+            return nom_du_profile
+            breakla 
