@@ -33,4 +33,17 @@ def creation_profile():
         else:
             print("Vous venez de crée votre profile")
             return nom_du_profile
-            breakla 
+            break
+        
+def enregistrement_profile(profile):
+    with open("profile", "wb") as fichier:
+        sauvegarde = pickle.Pickler(fichier)
+        sauvegarde.dump(profile)
+        
+def recuperation_profile():
+    with open("profile", "rb") as fichier:
+        recuperation = pickle.Unpickler(fichier)
+        profile_recupere = recuperation.load()
+        return profile_recupere
+    
+
