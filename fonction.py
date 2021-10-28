@@ -1,5 +1,6 @@
 import time
 import pickle
+import os
             
 def chrono():
     temps = 0
@@ -17,7 +18,7 @@ def chrono():
         
         print(f"{heure}:{minute}:{seconde}")
         
-def creation_profile():
+def validation_profile():
     # Cette fonction aura pour mission d'ajouter un nouveau profile
     # Création de la basse de doonés qui va contenir nos profile et temps
     nom_du_profile = input("Veuillez entrer le nom de vôtre nouveau profile !")
@@ -31,7 +32,7 @@ def creation_profile():
             print("Les caractéres spéciaux ne sont par toléré")
             nom_du_profile = input("Veuillez entrer le nom de vôtre nouveau profile sans caractére spéciale ")
         else:
-            print("Vous venez de crée votre profile")
+            print("Vous venez de crée un nouveaux profile")
             return nom_du_profile
             break
         
@@ -41,9 +42,11 @@ def enregistrement_profile(profile):
         sauvegarde.dump(profile)
         
 def recuperation_profile():
-    with open("profile", "rb") as fichier:
-        recuperation = pickle.Unpickler(fichier)
-        profile_recupere = recuperation.load()
-        return profile_recupere
-    
-
+    if os.path.exists("profile"):
+        with open("profile", "rb") as fichier:
+            recuperation = pickle.Unpickler(fichier)
+            profile_recupere = recuperation.load()
+            return profile_recupere
+    else:
+        profile_recupere = {}
+    return profile_recupere
