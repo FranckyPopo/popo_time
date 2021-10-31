@@ -2,7 +2,6 @@ import fonction
 
 # On récupere les profiles
 profile_recuperer = fonction.recuperation_profile()
-print(profile_recuperer)
 
 # On demande a l'utilisateur de choisir un pofile
 print("Veuillez choisir un profile")
@@ -34,3 +33,10 @@ if choix_profile or validation_profile in profile_recuperer.keys():
     print("1- Démarer le chrone")
     print("2- Voir l'historique")
     print("3- Choisir un autres profile")
+    reponse = int(input())
+    
+    # Fonctionnalité un 
+    if reponse == 1:
+        print("le chrono a démarer")
+        print("Pour quitter le chrono taper q")
+        fonction.chrono()

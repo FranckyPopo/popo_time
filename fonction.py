@@ -1,22 +1,31 @@
 import time
 import pickle
 import os
+import keyboard
+
+"""
+NB: vérifier la mathode is_pressed pour savoir pourquoi on doit taper plusieurs fois avant qu'elle s'execute
+"""
             
 def chrono():
     temps = 0
     
     while True:
-        # Création de temps
-        temps += 1
-        time.sleep(1)
-        
-        # Afichage du temps        
-        heure = temps // 3600
-        reste = temps % 3600
-        minute = reste // 60
-        seconde = reste % 60
-        
-        print(f"{heure}:{minute}:{seconde}")
+        if keyboard.is_pressed("q"):
+            print("Vous venez de quitter le chrono")
+            break
+        else:
+            # Création de temps
+            temps += 1
+            time.sleep(1)
+            
+            # Afichage du temps        
+            heure = temps // 3600
+            reste = temps % 3600
+            minute = reste // 60
+            seconde = reste % 60
+            
+            print(f"{heure}:{minute}:{seconde}")
         
 def validation_profile():
     # Cette fonction aura pour mission d'ajouter un nouveau profile
