@@ -4,29 +4,32 @@ import os
 import keyboard
 
 """
-NB: vérifier la mathode is_pressed pour savoir pourquoi on doit taper plusieurs fois avant qu'elle s'execute
+NB: chercher a savoir pourquoi il a un probléme avec ma fonction menu ligne 64
 """
             
 def chrono():
-    temps = 0
+    temp = 0
+    print("le chrono a démarer")
+    print("Pour quitter le chrono taper Q")
     
     while True:
         if keyboard.is_pressed("q"):
             print("Vous venez de quitter le chrono")
+            return temp
             break
         else:
             # Création de temps
-            temps += 1
+            temp += 1
             time.sleep(1)
             
             # Afichage du temps        
-            heure = temps // 3600
-            reste = temps % 3600
+            heure = temp // 3600
+            reste = temp % 3600
             minute = reste // 60
-            seconde = reste % 60
-            
+            seconde = reste % 60    
             print(f"{heure}:{minute}:{seconde}")
-        
+
+                  
 def validation_profile():
     # Cette fonction aura pour mission d'ajouter un nouveau profile
     # Création de la basse de doonés qui va contenir nos profile et temps
@@ -59,3 +62,35 @@ def recuperation_profile():
     else:
         profile_recupere = {}
     return profile_recupere
+
+def menu(profile_a_enregisttre):
+    """
+    UTILITER:
+    Cette fonction aura pour but de gerer le menu
+    
+    UTILISATION:
+    1- le premier paramére qui se nome profile_a_enregisttre prendra le profile a enregistrer
+    """
+    print("---------- Bienvenue dans le menu ----------")
+    print("1- Démarer le chronométre")
+    print("2- Voir l'historique")
+    print("3- Changer de profile")
+    reponse = int(input())
+  
+    if reponse == 1:
+            temps_a_enregistrer = chrono()
+            
+            # On récupere les profiles
+            liste_profiles = recuperation_profile()
+            
+            # Aprés avoir quitté le chrono on enregistre le temp passé par l'utilisateur
+            liste_profiles[profile_a_enregisttre] += temps_a_enregistrer
+            
+            # on enregistre la variable profile recuperer
+            enregistrement_profile(liste_profiles)
+            
+            # on raméne l'tilisateur au menu
+            menu(profile_a_enregisttre)
+            
+    if reponse == 2:
+        print("vous etre dans l'option 2")

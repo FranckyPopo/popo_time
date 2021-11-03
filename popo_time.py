@@ -1,19 +1,20 @@
 import fonction
 
 # On récupere les profiles
-profile_recuperer = fonction.recuperation_profile()
+liste_profiles = fonction.recuperation_profile()
+print(f'les temp quand on récupere des le demarage du programe: {liste_profiles}')
 
 # On demande a l'utilisateur de choisir un pofile
 print("Veuillez choisir un profile")
 
 # On affiche tout les profile qui son enregistré
-for cle in profile_recuperer.keys():
+for cle in liste_profiles.keys():
     print(cle)
     
 choix_profile = input("Veuillez entrer le nom de votre profile pour continuer: ")
 
 # On enregistre l'utilisateur si le profile n'existe pas
-if choix_profile not in profile_recuperer.keys():
+if choix_profile not in liste_profiles.keys():
     reponse = input("Votre profile n'exixte pas voulez vous crée un profile O/N: ")
     
     # on enregistre le profile
@@ -22,21 +23,11 @@ if choix_profile not in profile_recuperer.keys():
         validation_profile = fonction.validation_profile()
         
         # on enregistre le profile
-        profile_recuperer[validation_profile] = None
-        fonction.enregistrement_profile(profile_recuperer)
+        liste_profiles[validation_profile] = 0
+        fonction.enregistrement_profile(liste_profiles)
         
 # On affiche le menu a l'utilisateur si le profile choisir ou crée est dans la liste des profile
-if choix_profile or validation_profile in profile_recuperer.keys():
-    # Menu creation du menu
-    # On affiche des option au menu
-    print("---------- Bienvenue dans le menu du chrono ----------") 
-    print("1- Démarer le chrone")
-    print("2- Voir l'historique")
-    print("3- Choisir un autres profile")
-    reponse = int(input())
-    
-    # Fonctionnalité un 
-    if reponse == 1:
-        print("le chrono a démarer")
-        print("Pour quitter le chrono taper q")
-        fonction.chrono()
+if choix_profile or validation_profile in liste_profiles.keys():
+
+    # On affiche le menu a l'utilisateur s'il passe le controle
+    fonction.menu(choix_profile)       
