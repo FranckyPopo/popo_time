@@ -1,33 +1,62 @@
 import fonction
+import os
+import data
+import time
 
-# On récupere les profiles
-liste_profiles = fonction.recuperation_profile()
-print(f'les temp quand on récupere des le demarage du programe: {liste_profiles}')
+path_file = os.path.realpath(__file__)
+path_folder = os.path.dirname(path_file)
+folder_data_programmme = os.path.join(path_folder, "data_programme")
 
-# On demande a l'utilisateur de choisir un pofile
-print("Veuillez choisir un profile")
+if not os.path.exists(folder_data_programmme):
+    data.data_recording([], path_folder, "data_programme", "profile_list")
 
-# On affiche tout les profile qui son enregistré q<w<<
-for cle in liste_profiles.keys():
-    print(cle)
+choice_profile = input("Veuillez entrer le nom de vôtre profile: ").lower()
+profile_exist = False
+       
+while profile_exist == False:
+    # Récupération de la liste des profiles
+    profile_list_recovery = data.get_data(folder_data_programmme, "profile_list")
     
-choix_profile = input("Veuillez entrer le nom de votre profile pour continuer: ")
+    for item in profile_list_recovery:
+        if item["nom_profile"] == choice_profile:
+            profile_exist = True
 
-# On enregistre l'utilisateur si le profile n'existe pas
-if choix_profile not in liste_profiles.keys():
-    reponse = input("Votre profile n'exixte pas voulez vous crée un profile O/N: ")
-    
-    # on enregistre le profile
-    if reponse.upper() == "O":
-        # on verfie si le profile de l'utilisateur est correct 
-        validation_profile = fonction.validation_profile()
+    if not profile_exist:
+        choice = input("Le profile n'existe pas ! Voulez vous crée un profile ? O/N").upper()
         
-        # on enregistre le profile
-        liste_profiles[validation_profile] = 0
-        fonction.enregistrement_profile(liste_profiles)
+        if choice == "O":
+            name_profile = fonction.validation_profile()
+            instance_profile = {"nom_profile": name_profile, "total_time": 0}
+            profile_list_recovery.append(instance_profile)
+            print(profile_list_recovery)
+            profile_exist = True
+            print("Vous venez de crée un nouveau profile")
+            data.data_recording(profile_list_recovery, path_folder, "data_programme", "profile_list")
+            time.sleep(1.5)
+        else:
+            break
         
-# On affiche le menu a l'utilisateur si le profile choisir ou crée est dans la liste des profile
-if choix_profile or validation_profile in liste_profiles.keys():
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 
-    # On affiche le menu a l'utilisateur s'il passe le controle
-    fonction.menu(choix_profile)       
+# while profile_exist:
+#     if profile_exist:
+#         menu = """
+#         ---------- Bienvenue dans le menu ----------
+#         1- Démarer le chronométre
+#         2- Voir l'historique
+#         3- Changer de profile
+#         """
+#         print(menu)
+#         reponse = int(input())
+
