@@ -7,11 +7,11 @@ path_file = os.path.realpath(__file__)
 path_folder = os.path.dirname(path_file)
 folder_data_programmme = os.path.join(path_folder, "data_programme")
 
-if not os.path.exists(folder_data_programmme):
+if not os.path.exists(folder_data_programmme) or os.path.getsize(r"D:\Programmation\projet_personnel\popo_time\data_programme\profile_list.json") == 0:
     data.data_recording([], path_folder, "data_programme", "profile_list")
+
 choice_profile = input("Veuillez entrer le nom de vôtre profile: ").lower()
 while True:
-    
     profile_exist = False
         
     while profile_exist == False:
