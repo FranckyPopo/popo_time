@@ -14,8 +14,8 @@ menu = """
 path_file = os.path.realpath(__file__)
 path_folder = os.path.dirname(path_file)
 folder_data_programmme = os.path.join(path_folder, "data_programme")
-file_profile_list = folder_data_programmme + "/" + "profile_list"
-file_history = folder_data_programmme + "/" + "history"
+file_profile_list = folder_data_programmme + "/" + "profile_list.json"
+file_history = folder_data_programmme + "/" + "history.json"
 
 if not os.path.isfile(file_history) and not os.path.isfile(file_profile_list):
     data.data_recording([], path_folder, "data_programme", "profile_list")
@@ -29,13 +29,12 @@ history = data.get_data(folder_data_programmme, "history")
 
 print(history, profile_list_recovery)
     
-profile = None
 while True:  
     choice_profile = input("Veuillez entrer le nom de vôtre profile: ").lower()   
             
-    for profile in profile_list_recovery:
-        if profile["nom_profile"] == choice_profile:
-            profile = profile
+    for item in profile_list_recovery:
+        if item["nom_profile"] == choice_profile:
+            choice_profile = item
             profile_exist = True
                     
     while profile_exist == False:
@@ -61,7 +60,7 @@ while True:
         
         if choice_menu == 1:
             stopwatch = fonction.stopwatch()
-            profile["total_time"] += stopwatch
+            item["total_time"] += stopwatch
             data.data_recording(profile_list_recovery, path_folder, "data_programme", "profile_list")
         elif choice_menu == 2:
             pass                
