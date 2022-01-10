@@ -30,6 +30,9 @@ if not os.path.isfile(file_history) and not os.path.isfile(file_profile_list):
 profile_exist = False
 profile_list_recovery = data.get_data(folder_data_programmme, "profile_list")
 
+for item in profile_list_recovery:
+    print(item["name_profile"])
+
 # On vérifie que le profile existe dans la liste des profiles
 choice_profile = input("Veuillez entrer le nom de vôtre profile: ").lower()
 for item in profile_list_recovery:
@@ -83,5 +86,11 @@ while True:
                 if item["name_profile"] == choice_profile:
                     profile_exist = True
                     break
+        elif choice_menu == 4:
+            print("Fermeture du programme")
+            exit()
+        else:
+            print("Le numéro choisit n'est pas attribué a une option")
+            time.sleep(1.5)        
 
                 
