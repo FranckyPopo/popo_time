@@ -35,8 +35,8 @@ choice_profile = input("Veuillez entrer le nom de vôtre profile: ").lower()
 for item in profile_list_recovery:
     if item["name_profile"] == choice_profile:
         profile_exist = True
-        break
-        
+        break    
+    
 while True:
 
     while not profile_exist:
@@ -55,9 +55,11 @@ while True:
             break
     
     while profile_exist:
+         
         print(menu)  
         choice_menu = int(input())
         history = data.get_data(folder_data_programmme, "history") 
+        print(choice_profile)
         
         if choice_menu == 1:
             stopwatch = fonction.stopwatch()
@@ -75,4 +77,11 @@ while True:
                 time_total = f"{hour}: {minute}: {seconde}"
                 print(display_history.format(item["date"], time_total))
                 time.sleep(0.5)
+        elif choice_menu == 3:
+            choice_profile = input("Veuillez entrer le nom de vôtre profile: ").lower()
+            for item in profile_list_recovery:
+                if item["name_profile"] == choice_profile:
+                    profile_exist = True
+                    break
+
                 
