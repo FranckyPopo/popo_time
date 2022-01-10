@@ -62,13 +62,14 @@ def history(name_profile, time_stopwatch):
     
     folder_current = os.getcwd()
     folder_data_programmme = os.path.join(folder_current, "data_programme")
+    print(folder_data_programmme)
     history = data.get_data(folder_data_programmme, "history")
 
     history_exist = False
     date_current = datetime.date.today()
     instance_history = {
         "name_profile": name_profile,
-        "date": date_current,
+        "date": str(date_current),
         "time": 0
     }   
          
@@ -79,7 +80,8 @@ def history(name_profile, time_stopwatch):
             break
     else:
         history.append(instance_history)
-        data.data_recording(history, folder_data_programmme, "data_programme", "history")  
+        print(history)
+        data.data_recording(history, folder_current, "data_programme", "history")  
         
     if history_exist:
         profile_history["time"] += time_stopwatch  
