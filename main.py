@@ -27,8 +27,7 @@ profile_exist = False
 profile_list_recovery = data.get_data(folder_data_programmme, "profile_list")
 history = data.get_data(folder_data_programmme, "history")
 
-print(history)
-
+# On vérifie que le profile existe dans la liste des profiles
 choice_profile = input("Veuillez entrer le nom de vôtre profile: ").lower()
 for item in profile_list_recovery:
     if item["name_profile"] == choice_profile:
@@ -37,11 +36,6 @@ for item in profile_list_recovery:
         break
         
 while True:
-    instance_history = {
-        "name_profile": item["name_profile"],
-        "date": None,
-        "time": 0
-    }
                     
     while not profile_exist:
         choice = input("Le profile n'existe pas ! Voulez vous crée un profile O/N ? ").upper()
@@ -65,9 +59,8 @@ while True:
         if choice_menu == 1:
             stopwatch = fonction.stopwatch()
             item["total_time"] += stopwatch
-            data.data_recording(profile_list_recovery, path_folder, "data_programme", "profile_list")
+            fonction.history(item["name_profile"], stopwatch)
+            data.data_recording(profile_list_recovery, path_folder, "data_programme", "profile_list")    
         elif choice_menu == 2:
-           
             pass
-        
 

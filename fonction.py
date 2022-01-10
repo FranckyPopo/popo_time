@@ -58,11 +58,9 @@ def history(name_profile, time_stopwatch):
         name_profile (str): Ce paramétre reprente le nom du profile, il va nous servir lors de la création de l'instance
         time_stopwatch (int): Ce paramétre reprente le temps du chronométre
     """
-    
-    
+
     folder_current = os.getcwd()
     folder_data_programmme = os.path.join(folder_current, "data_programme")
-    print(folder_data_programmme)
     history = data.get_data(folder_data_programmme, "history")
 
     history_exist = False
@@ -75,14 +73,15 @@ def history(name_profile, time_stopwatch):
          
     # On vérifie que le profile existe dans l'historique
     for profile_history in history:
-        if profile_history["name_profile"] == item["name_profile"] and profile_history["date"] == date_current:
+        if profile_history["name_profile"] == name_profile and profile_history["date"] == str(date_current):
             history_exist = True
             break
     else:
+        instance_history["time"] += time_stopwatch
         history.append(instance_history)
-        print(history)
         data.data_recording(history, folder_current, "data_programme", "history")  
         
     if history_exist:
-        profile_history["time"] += time_stopwatch  
+        profile_history["time"] += time_stopwatch 
+        data.data_recording(history, folder_current, "data_programme", "history")  
         
