@@ -29,22 +29,23 @@ history = data.get_data(folder_data_programmme, "history")
 
 print(history, profile_list_recovery)
     
+choice_profile = input("Veuillez entrer le nom de vôtre profile: ").lower()
+for item in profile_list_recovery:
+    if item["name_profile"] == choice_profile:
+        choice_profile = item
+        profile_exist = True
+        break
+        
 while True:  
-    choice_profile = input("Veuillez entrer le nom de vôtre profile: ").lower()   
-            
-    for item in profile_list_recovery:
-        if item["nom_profile"] == choice_profile:
-            choice_profile = item
-            profile_exist = True
                     
-    while profile_exist == False:
+    while not profile_exist:
 
         if not profile_exist:
             choice = input("Le profile n'existe pas ! Voulez vous crée un profile O/N ? ").upper()
             
             if choice == "O":
                 name_profile = fonction.validation_profile()
-                instance_profile = {"nom_profile": name_profile, "total_time": 0}
+                instance_profile = {"name_profile": name_profile, "total_time": 0}
                 profile_list_recovery.append(instance_profile)
                 print(profile_list_recovery)
                 profile_exist = True
