@@ -27,8 +27,8 @@ profile_exist = False
 profile_list_recovery = data.get_data(folder_data_programmme, "profile_list")
 history = data.get_data(folder_data_programmme, "history")
 
-print(history, profile_list_recovery)
-    
+print(history)
+
 choice_profile = input("Veuillez entrer le nom de vôtre profile: ").lower()
 for item in profile_list_recovery:
     if item["name_profile"] == choice_profile:
@@ -36,24 +36,27 @@ for item in profile_list_recovery:
         profile_exist = True
         break
         
-while True:  
+while True:
+    instance_history = {
+        "name_profile": item["name_profile"],
+        "date": None,
+        "time": 0
+    }
                     
     while not profile_exist:
+        choice = input("Le profile n'existe pas ! Voulez vous crée un profile O/N ? ").upper()
 
-        if not profile_exist:
-            choice = input("Le profile n'existe pas ! Voulez vous crée un profile O/N ? ").upper()
-            
-            if choice == "O":
-                name_profile = fonction.validation_profile()
-                instance_profile = {"name_profile": name_profile, "total_time": 0}
-                profile_list_recovery.append(instance_profile)
-                print(profile_list_recovery)
-                profile_exist = True
-                print("Vous venez de crée un nouveau profile")
-                data.data_recording(profile_list_recovery, path_folder, "data_programme", "profile_list")
-                time.sleep(1.5)
-            else:
-                break
+        if choice == "O":
+            name_profile = fonction.validation_profile()
+            instance_profile = {"name_profile": name_profile, "total_time": 0}
+            profile_list_recovery.append(instance_profile)
+            print(profile_list_recovery)
+            profile_exist = True
+            print("Vous venez de crée un nouveau profile")
+            data.data_recording(profile_list_recovery, path_folder, "data_programme", "profile_list")
+            time.sleep(1.5)
+        else:
+            break
     
     while profile_exist:
         print(menu)  
@@ -64,7 +67,7 @@ while True:
             item["total_time"] += stopwatch
             data.data_recording(profile_list_recovery, path_folder, "data_programme", "profile_list")
         elif choice_menu == 2:
-            pass                
-        
+           
+            pass
         
 
