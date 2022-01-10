@@ -1,13 +1,16 @@
 import time
 import os
 import keyboard
+import datetime
+import data
     
-def chrono():
+def stopwatch():
     temp = 0
     print("le chrono a démarer")
     print("Pour quitter le chrono taper Q")
     
     while True:
+        time.sleep(1)
         if keyboard.is_pressed("q"):
             print("Vous venez de quitter le chrono")
             return temp
@@ -15,7 +18,6 @@ def chrono():
         else:
             # Création de temps
             temp += 1
-            time.sleep(1)
             
             # Afichage du temps        
             heure = temp // 3600
@@ -25,6 +27,7 @@ def chrono():
             print(f"{heure}:{minute}:{seconde}")
                   
 def validation_profile():
+    
     """
     Cette fonction va nous permétre vérifier le nom d'un profile
 
@@ -45,3 +48,39 @@ def validation_profile():
             print("Vous venez de crée un nouveaux profile")
             return nom_du_profile
             break
+        
+def history(name_profile, time_stopwatch):
+    """
+    Cette fonction va permetre de d'enregistrer une nouvelle instance dans l'historique ou fait la mise du temps
+    qui exite déjà
+
+    Args:
+        name_profile (str): Ce paramétre reprente le nom du profile, il va nous servir lors de la création de l'instance
+        time_stopwatch (int): Ce paramétre reprente le temps du chronométre
+    """
+    
+    
+    folder_current = os.getcwd()
+    folder_data_programmme = os.path.join(folder_current, "data_programme")
+    history = data.get_data(folder_data_programmme, "history")
+
+    history_exist = False
+    date_current = datetime.date.today()
+    instance_history = {
+        "name_profile": name_profile,
+        "date": date_current,
+        "time": 0
+    }   
+         
+    # On vérifie que le profile existe dans l'historique
+    for profile_history in history:
+        if profile_history["name_profile"] == item["name_profile"] and profile_history["date"] == date_current:
+            history_exist = True
+            break
+    else:
+        history.append(instance_history)
+        data.data_recording(history, path_folder, "data_programme", "history")  
+        
+    if history_exist:
+        profile_history["time"] += time_stopwatch  
+        
