@@ -39,9 +39,9 @@ def _create_tables():
             date_updated DATETIME NOT NULL
         );
         
-        CREATE TABLE IF NOT EXISTS compter (
+        CREATE TABLE IF NOT EXISTS timer (
             id INT AUTO_INCREMENT PRIMARY KEY,
-            time INT NOT NULL,
+            minutes INT NOT NULL,
             task_id INT NOT NULL,
             FOREIGN KEY (task_id) REFERENCES task (id),
             date_created DATETIME NOT NULL
