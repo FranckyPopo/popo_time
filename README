@@ -1,11 +1,12 @@
-
-
 # CAHIER DES CHARGES DU PROJET
-- Création des tables timer et task
+- Création des tables timer et task [x]
 - Crée une tâches []
-- Modifier une tâche
+- Modifier une tâche []
 - Supprimer une tâche []
 - Voir la liste des tâches
 - Lancement du minuteur []
+- Enregistrement des données du miniteur dans la BD []
+- Quand une tâche est supprimer les instances de timer
+qui lui son relié doivent être aussi supprimer []
 - Voir l'historique []
 
