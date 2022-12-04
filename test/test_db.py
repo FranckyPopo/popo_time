@@ -1,5 +1,7 @@
-import mysql.connector
 from unittest import TestCase
+from datetime import datetime
+
+import mysql.connector
 
 from db import (
     _create_database,
@@ -27,15 +29,34 @@ class TestDataBase(TestCase):
         )
      
      
-     
 class MockBD(TestCase):
     @classmethod
     def setUpClass(cls):
         cls._create_data_base()
         cls._create_tables()
+        
+    def setUp(self):
+        self.conn = mysql.connector.connect(
+            host="127.0.0.1",
+            user="root",
+            passwd="pass",
+            database="popo_time_test",
+        )
+        self.cursor = self.conn.cursor()
+        
+    @classmethod
+    def tearDownClass(cls):
+        conn = mysql.connector.connect(
+            host="127.1.1.0",
+            user="root",
+            passwd="pass",
+        )
+        cursor = conn.cursor()
+        cursor.execute("DROP DATABASE popo_time_test;")
     
     @classmethod
     def _create_data_base(cls):
+        "Cette méthode crée une base de données fictive pour les test unitaire"
         conn = mysql.connector.connect(
             host="127.0.0.1",
             user="root",
@@ -46,6 +67,7 @@ class MockBD(TestCase):
     
     @classmethod
     def _create_tables(cls):
+        "Cette méthode permet de crée des table fictive pour les test unitaire"
         conn = mysql.connector.connect(
             host="127.0.0.1",
             user="root",
@@ -79,8 +101,46 @@ class TestTableTask(MockBD):
     CRUD qu'éffectura le programme sur la table task
     """
     
+    def get_tasks(self):
+        "Cette méthode Permet de récupérer les données dans la table task_test"
+        self.cursor.execute("SELECT * FROM task_test;")
+        return self.cursor.fetchall()
+    
     def test_task_add(self):
-        pass
+        "Cette méthode de test permet de tester qu'une tâche est bien ajouté à la table task_test"
         
+        # On vérifie que rien n'existe dans la table task_test
+        tasks = self.get_tasks()
+        self.assertEqual(
+            len(tasks),
+            0,
+            "Il existe des données dans la table task_test"
+        )
         
+        # Ajout des données dans la table task_test
+        date_created = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        date_updated = date_created
+        values = [
+            ("Jouer au foot", date_created, date_updated),
+            ("Faire des projet", date_created, date_updated),
+            ("Gagner de l'argent", date_created, date_updated),
+        ]
+        self.cursor.executemany(
+            """
+            INSERT INTO task_test (
+                name,
+                date_created,
+                date_updated
+            )
+            VALUES (%s, %s, %s);
+            """,
+            values
+        )
+        self.conn.commit()
         
+        tasks = self.get_tasks()
+        self.assertEqual(
+            len(tasks),
+            3,
+            "Il existe plus de données qu'il en devais avoir dans la table tasks"
+        )

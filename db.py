@@ -85,7 +85,7 @@ class TaskDataBase:
         
         date_created = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         date_updated = date_created
-        values = (task_name, date_created, date_updated)
+        value = (task_name, date_created, date_updated)
         
         try: 
             self.cursor.execute(
@@ -97,7 +97,7 @@ class TaskDataBase:
                 )
                 VALUES (%s, %s, %s);
                 """,
-                values
+                value
             )
         except mysql.connector.errors.IntegrityError:
             print("La tâche que vous essayez d'ajouter existe déjà !")
