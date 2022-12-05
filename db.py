@@ -69,8 +69,8 @@ class TaskDataBase:
         
     def task_add(self, task_name: str):
         """
-       Cette méthode permet d'inserer 
-       de nouvelle tâche à la table task
+        Cette méthode permet d'inserer 
+        de nouvelle tâche à la table task
 
         Args:
             task_name (str): Ce paramétre represente 
@@ -108,6 +108,26 @@ class TaskDataBase:
             self.conn.commit()
             self.conn.close()
             print("Tâche ajouté")
+        
+    def task_modify(self, task_id: int, new_name_task: str):
+        from popo_time import ProgramMenu
+        
+        date_updated = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        value = (new_name_task, date_updated, task_id)
+        
+        self.cursor.execute(
+            f"""
+            UPDATE task SET name = %s, date_updated = %s
+            WHERE id = %s;
+            """,
+            value
+        )
+        self.conn.commit()
+        self.conn.close()
+        print("Tâche modifier avec success")
+        time.sleep(1)
+        ProgramMenu().program_start()
+            
         
         
 if __name__ == "__main__":

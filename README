@@ -1,8 +1,9 @@
 # CAHIER DES CHARGES DU PROJET
 - Création des tables timer et task [x]
-- Crée une tâches []
+- Crée une tâches [x]
 - Modifier une tâche []
 - Supprimer une tâche []
+- Crée un fichier d'environement pour stocker les données censible []
 - Voir la liste des tâches
 - Lancement du minuteur []
 - Enregistrement des données du miniteur dans la BD []

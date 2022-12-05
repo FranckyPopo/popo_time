@@ -7,6 +7,7 @@ from db import (
     _create_database,
     _create_tables,
 )
+import utils
 
 
 class TestDataBase(TestCase):
@@ -101,16 +102,11 @@ class TestTableTask(MockBD):
     CRUD qu'éffectura le programme sur la table task
     """
     
-    def get_tasks(self):
-        "Cette méthode Permet de récupérer les données dans la table task_test"
-        self.cursor.execute("SELECT * FROM task_test;")
-        return self.cursor.fetchall()
-    
     def test_task_add(self):
         "Cette méthode de test permet de tester qu'une tâche est bien ajouté à la table task_test"
         
         # On vérifie que rien n'existe dans la table task_test
-        tasks = self.get_tasks()
+        tasks = utils.get_data_from_database("popo_time_test", "task_test")
         self.assertEqual(
             len(tasks),
             0,
@@ -138,7 +134,7 @@ class TestTableTask(MockBD):
         )
         self.conn.commit()
         
-        tasks = self.get_tasks()
+        tasks = utils.get_data_from_database("popo_time_test", "task_test")
         self.assertEqual(
             len(tasks),
             3,
