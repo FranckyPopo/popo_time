@@ -27,6 +27,18 @@ class ProgramMenu:
         self._throw_an_option()
         
     def _throw_an_option(self, option_number: str = None):
+        """
+        Cette méthode permet de sélectionner une option dans le menu.
+        Le programmme demande de choisir une option si le paramétre 
+        option_number n'a pas été passé en argument. Dans le cas 
+        ou le paramètre option_number a été passé en argument une
+        des méthodes qui se trouve dans la variable options est exécuté
+        en fonction de la valeur de option number. 
+
+        Args:
+            option_number (str, optional): Ce paramétre represente
+            une option du programme, par défault ça valeur est vide
+        """        
         time.sleep(1)
         options = {
             "1": self.task_add, 
@@ -35,11 +47,16 @@ class ProgramMenu:
         
         if option_number:
             options.get(option_number)()
-        option = input("Veuillez choisir une option: ") 
-        options.get(option)()
+        else:
+            option = input("Veuillez choisir une option: ") 
+            options.get(option)()
         
     def task_add(self):
         task_name = input("Veuillez entrer le nom de la tâche à enregistrer: ")
+        
+        if not task_name:
+            print("Entrer une valeur correcte !")
+            self._throw_an_option("1")
         self.task_data_base.task_add(task_name)
         
     def task_modify(self):
@@ -63,8 +80,9 @@ class ProgramMenu:
             if not task_exists:
                 print("Aucune tâche est relier a cet identifiant")
                 self._throw_an_option("2")
-            
         
-        new_name_task = input("Veuillez entrer le nouveau nom de la tâche: ")
-        self.task_data_base.task_modify(task_id, new_name_task)
-        
+            new_name_task = input("Veuillez entrer le nouveau nom de la tâche: ")
+            self.task_data_base.task_modify(task_id, new_name_task)
+            print("Tâche modifier avec success")
+            time.sleep(1)
+            ProgramMenu().program_start()

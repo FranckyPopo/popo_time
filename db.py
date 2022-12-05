@@ -1,8 +1,8 @@
 """
-Ce module permetra d'interagire avec la base de données,
-par exemple le programme passera pas ce module pour crée des tables,
-la base de données. Le programme passera aussi pas ce module pour éffectuer
-les différente opération du CRUD.
+Ce module permettra d'interagir avec la base de données;
+par exemple le programme passera pas ce module pour créer des tables et
+la base de données. Le programme passera aussi pas ce module pour effectuer
+Les différentes opérations du CRUD.
 """
 
 from datetime import datetime
@@ -24,7 +24,7 @@ def _create_database():
     
         
 def _create_tables():
-    "Cette fonction permet les différentes tables de la base de donnée"
+    "Cette fonction permet de crée les différentes tables de la base de donnée"
     
     conn = mysql.connector.connect(
         host="127.0.0.1",
@@ -101,15 +101,25 @@ class TaskDataBase:
             )
         except mysql.connector.errors.IntegrityError:
             print("La tâche que vous essayez d'ajouter existe déjà !")
-            time.sleep(1)
-            self.conn.close()
-            ProgramMenu().program_start()
         else:
             self.conn.commit()
+            print("Tâche ajouté !")
+        finally:
             self.conn.close()
-            print("Tâche ajouté")
+            time.sleep(1)
+            ProgramMenu().program_start()
         
     def task_modify(self, task_id: int, new_name_task: str):
+        """
+        Cette méthode permet de modifier 
+        une entré dans la table task
+
+        Args:
+            task_id (int): Ce pramètre represente l'identifiant de la
+            tâche modifier
+            new_name_task (str): Ce pramètre represente le nom de la 
+            nouvelle tâche
+        """        
         from popo_time import ProgramMenu
         
         date_updated = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -124,9 +134,7 @@ class TaskDataBase:
         )
         self.conn.commit()
         self.conn.close()
-        print("Tâche modifier avec success")
-        time.sleep(1)
-        ProgramMenu().program_start()
+
             
         
         
