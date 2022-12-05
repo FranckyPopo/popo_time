@@ -15,7 +15,8 @@ def get_data_from_database(name_database: str, name_table: str) -> list[tuple]:
     return cursor.fetchall()
 
 
-def get_item_from_database(name_database: str, name_table: str, id_item_search) -> bool:
+def item_exists_in_database(name_database: str, name_table: str, id_item_search) -> bool:
+    "Cette méthode revoir True si l'entrer que nous cherchons existe"
     conn = mysql.connector.connect(
         host="127.0.0.1",
         user="root",
@@ -24,5 +25,5 @@ def get_item_from_database(name_database: str, name_table: str, id_item_search) 
     )
     cursor = conn.cursor()
     cursor.execute(f"SELECT EXISTS( SELECT * FROM {name_table} WHERE id={id_item_search} );")
-    result : list = cursor.fetchone()
+    result : tuple = cursor.fetchone()
     return True if result[0] else False

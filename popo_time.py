@@ -73,7 +73,7 @@ class ProgramMenu:
         # Vérifions que l'ID existe
         task_id = input("Veuillez entrer l'ID de la tâche à modifier: ")
         try:
-            task_exists = utils.get_item_from_database(
+            task_exists = utils.item_exists_in_database(
                 self.name_database,
                 self.name_table,
                 task_id,
@@ -87,7 +87,9 @@ class ProgramMenu:
                 self._throw_an_option("2")
         
             new_name_task = input("Veuillez entrer le nouveau nom de la tâche: ")
+            while not new_name_task:
+                new_name_task = input("Veuillez entrer le nouveau nom de la tâche: ")
+                
             self.task_data_base.task_modify(task_id, new_name_task)
             print("Tâche modifier avec success")
-            time.sleep(1)
             ProgramMenu().program_start()
