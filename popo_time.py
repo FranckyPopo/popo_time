@@ -16,7 +16,7 @@ class ProgramMenu:
     
     def program_start(self):
         "Cette méthode represente le menu du programe"
-        
+        time.sleep(1)
         print("--------------- Bienvenu sur Popo Time ---------------")
         print("1 - Ajouter une tâche")
         print("2 - Modifier une tâche")
@@ -45,11 +45,15 @@ class ProgramMenu:
             "2": self.task_modify, 
         }
         
-        if option_number:
-            options.get(option_number)()
-        else:
-            option = input("Veuillez choisir une option: ") 
-            options.get(option)()
+        try:
+            if option_number:
+                options.get(option_number)()
+            else:
+                option = input("Veuillez choisir une option: ") 
+                options.get(option)()
+        except TypeError:
+            print("L'option de vous avez choisir n'exite pas !")
+            self.program_start()
         
     def task_add(self):
         task_name = input("Veuillez entrer le nom de la tâche à enregistrer: ")
