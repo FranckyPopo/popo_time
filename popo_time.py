@@ -53,6 +53,7 @@ class ProgramMenu:
                 options.get(option)()
         except TypeError:
             print("L'option de vous avez choisir n'exite pas !")
+        else:
             self.program_start()
         
     def task_add(self):
