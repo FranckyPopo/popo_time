@@ -46,7 +46,11 @@ class MockBD(TestCase):
         self.cursor = self.conn.cursor()
         
         test_in_progress = self.id()
-        if test_in_progress == "test_utils.TestUtils.test_get_data_from_database":
+        path_test = [
+            "test_utils.TestUtils.test_get_data_from_database",
+            "test_utils.TestUtils.test_get_item_from_database",
+        ]
+        if test_in_progress in path_test:
             self.adding_data_to_tables()
         
     def tearDown(self):
