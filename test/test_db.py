@@ -14,7 +14,7 @@ class TestDataBase(TestCase):
     """
     Cette class s'occupe de tester la création de la 
     base de données et la création des différents table 
-    """
+    """ 
     def test_create_data_base(self):
         "Ce test permet de vérifier la création de la base de données"
         self.assertIsNone(
@@ -45,9 +45,17 @@ class MockBD(TestCase):
         )
         self.cursor = self.conn.cursor()
         
+        test_in_progress = self.id()
+        if test_in_progress == "test_utils.TestUtils.test_get_data_from_database":
+            self.adding_data_to_tables()
+        
     def tearDown(self):
-        self.cursor.execute("DROP TABLE IF EXISTS task_test;")
-        self.cursor.execute("DROP TABLE IF EXISTS timer_test;")
+        self.cursor.execute(
+            """
+            DROP TABLE IF EXISTS task_test;
+            DROP TABLE IF EXISTS timer_test;
+            """
+        )
         self.cursor.close() 
         
     @classmethod
@@ -60,6 +68,45 @@ class MockBD(TestCase):
         cursor = conn.cursor()
         cursor.execute("DROP DATABASE popo_time_test;")
     
+    def adding_data_to_tables(self):
+        """
+        Cette méthode permet d'ajouter des données  
+        dans les tables task_test et timer_tesy
+        """
+                
+        # Ajout des donnés dans la  table task_test
+        values = [
+            (
+                "Gagnez de l'argent", 
+                datatime.now().strftime("%Y-%m-%d %H:%M:S%"),
+                datatime.now().strftime("%Y-%m-%d %H:%M:S%")
+            ),
+            (
+                "Rendre heureuse ma mére", 
+                datatime.now().strftime("%Y-%m-%d %H:%M:S%"),
+                datatime.now().strftime("%Y-%m-%d %H:%M:S%")
+            ),
+            (
+                "Se former", 
+                datatime.now().strftime("%Y-%m-%d %H:%M:S%"),
+                datatime.now().strftime("%Y-%m-%d %H:%M:S%")
+            ),
+        ]
+        
+        self.cursor.executemany(
+            """
+            INSET INTO task_test (
+                name,
+                date_created,
+                date_updated
+            )
+            VALUES (%s, %s, %s)
+            """,
+            values
+        )
+        self.conn.commit()
+        self.conn.close()
+        
     @classmethod
     def _create_data_base(cls):
         "Cette méthode crée une base de données fictive pour les test unitaire"
