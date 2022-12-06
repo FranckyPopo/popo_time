@@ -78,24 +78,24 @@ class MockBD(TestCase):
         values = [
             (
                 "Gagnez de l'argent", 
-                datatime.now().strftime("%Y-%m-%d %H:%M:S%"),
-                datatime.now().strftime("%Y-%m-%d %H:%M:S%")
+                datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             ),
             (
                 "Rendre heureuse ma mére", 
-                datatime.now().strftime("%Y-%m-%d %H:%M:S%"),
-                datatime.now().strftime("%Y-%m-%d %H:%M:S%")
+                datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             ),
             (
                 "Se former", 
-                datatime.now().strftime("%Y-%m-%d %H:%M:S%"),
-                datatime.now().strftime("%Y-%m-%d %H:%M:S%")
+                datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             ),
         ]
         
         self.cursor.executemany(
             """
-            INSET INTO task_test (
+            INSERT INTO task_test (
                 name,
                 date_created,
                 date_updated
@@ -105,7 +105,6 @@ class MockBD(TestCase):
             values
         )
         self.conn.commit()
-        self.conn.close()
         
     @classmethod
     def _create_data_base(cls):
@@ -146,6 +145,7 @@ class MockBD(TestCase):
             );
             """
         )   
+        conn.close()
 
 
 class TestTableTask(MockBD):
