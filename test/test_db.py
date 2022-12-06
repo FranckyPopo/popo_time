@@ -34,9 +34,9 @@ class MockBD(TestCase):
     @classmethod
     def setUpClass(cls):
         cls._create_data_base()
-        cls._create_tables()
-        
+                
     def setUp(self):
+        MockBD._create_tables()
         self.conn = mysql.connector.connect(
             host="127.0.0.1",
             user="root",
@@ -44,6 +44,11 @@ class MockBD(TestCase):
             database="popo_time_test",
         )
         self.cursor = self.conn.cursor()
+        
+    def tearDown(self):
+        self.cursor.execute("DROP TABLE IF EXISTS task_test;")
+        self.cursor.execute("DROP TABLE IF EXISTS timer_test;")
+        self.cursor.close() 
         
     @classmethod
     def tearDownClass(cls):
@@ -140,3 +145,67 @@ class TestTableTask(MockBD):
             3,
             "Il existe plus de données qu'il en devais avoir dans la table tasks"
         )
+        
+    def test_task_modify(self):
+        # Ajout d'une tâche dans la table task_test
+        date_created = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        date_updated = date_created
+        value = ("Jouer au foot", date_created, date_updated)
+    
+        self.cursor.execute(
+            """
+            INSERT INTO task_test (
+                name,
+                date_created,
+                date_updated
+            )
+            VALUES (%s, %s, %s);
+            """,
+            value
+        )
+        self.conn.commit()
+        
+        # Vérifions que la tâche a été crée
+        task_id = 1
+        task_exists = utils.item_exists_in_database(
+            "popo_time_test",
+            "task_test",
+            task_id
+        )
+        self.assertTrue(task_exists, "La tâche recherché n'existe pas !")
+        
+        # Modification de la tâche
+        date_updated = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        task_new_name = "Gagner de l'argent"
+        value = (task_new_name, date_updated, task_id)
+        
+        self.cursor.execute(
+            f"""
+            UPDATE task_test SET name = %s, date_updated = %s
+            WHERE id = %s;
+            """,
+            value
+        )
+        self.conn.commit()
+
+        # récupération de la tâche
+        task = utils.get_item_from_database(
+            "popo_time_test",
+            "task_test",
+            task_id
+        )
+        task_name = task[1]
+        task_date_updated = task[3].strftime('%Y-%m-%d %H:%M:%S')
+        
+        # Vérifions que les modification on été appliqué
+        self.assertEqual(
+            task_name,
+            task_new_name,
+            "Les noms des deux tache sont différent"
+        )
+        self.assertEqual(
+            date_updated,
+            task_date_updated,
+            "Les dates de mise ajout ne correspondent pas"
+        )
+        
