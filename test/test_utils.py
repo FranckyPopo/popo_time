@@ -92,6 +92,3 @@ class TestUtils(MockBD):
         self.assertTrue(task_1exists)
         self.assertFalse(task_5_exists)
               
-    
-        
-        

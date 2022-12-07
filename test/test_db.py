@@ -35,6 +35,13 @@ class TestDataBase(TestCase):
      
      
 class MockBD(TestCase):
+    conn = mysql.connector.connect(
+        host=ID_CONNEXION_DATABASE.get("HOST_DATABASE"),
+        user=ID_CONNEXION_DATABASE.get("USERNAME_DATABASE"),
+        passwd=ID_CONNEXION_DATABASE.get("PASSWORD_DATABASE"),
+    )
+    cursor = conn.cursor()
+    
     @classmethod
     def setUpClass(cls):
         cls._create_data_base()
@@ -55,6 +62,7 @@ class MockBD(TestCase):
             "test_utils.TestUtils.test_get_item_from_database",
             "test_utils.TestUtils.test_item_exists_in_database",
             "test_db.TestTableTask.test_task_delete",
+            "test_db.TestTableTask.test_task_modify",
         ]
         if test_in_progress in path_test:
             self.adding_data_to_tables()
@@ -70,13 +78,7 @@ class MockBD(TestCase):
         
     @classmethod
     def tearDownClass(cls):
-        conn = mysql.connector.connect(
-            host=ID_CONNEXION_DATABASE.get("HOST_DATABASE"),
-            user=ID_CONNEXION_DATABASE.get("USERNAME_DATABASE"),
-            passwd=ID_CONNEXION_DATABASE.get("PASSWORD_DATABASE"),
-        )
-        cursor = conn.cursor()
-        cursor.execute("DROP DATABASE popo_time_test;")
+        cls.cursor.execute("DROP DATABASE popo_time_test;")
     
     def adding_data_to_tables(self):
         """
@@ -119,14 +121,7 @@ class MockBD(TestCase):
     @classmethod
     def _create_data_base(cls):
         "Cette méthode crée une base de données fictive pour les test unitaire"
-
-        conn = mysql.connector.connect(
-            host=ID_CONNEXION_DATABASE.get("HOST_DATABASE"),
-            user=ID_CONNEXION_DATABASE.get("USERNAME_DATABASE"),
-            passwd=ID_CONNEXION_DATABASE.get("PASSWORD_DATABASE"),
-        )
-        cursor = conn.cursor()
-        cursor.execute("CREATE DATABASE IF NOT EXISTS popo_time_test;")
+        cls.cursor.execute("CREATE DATABASE IF NOT EXISTS popo_time_test;")
     
     @classmethod
     def _create_tables(cls):
@@ -206,24 +201,8 @@ class TestTableTask(MockBD):
         )
         
     def test_task_modify(self):
-        # Ajout d'une tâche dans la table task_test
-        date_created = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        date_updated = date_created
-        value = ("Jouer au foot", date_created, date_updated)
-    
-        self.cursor.execute(
-            """
-            INSERT INTO task_test (
-                name,
-                date_created,
-                date_updated
-            )
-            VALUES (%s, %s, %s);
-            """,
-            value
-        )
-        self.conn.commit()
-        
+        "Cette méthode de test permet de tester qu'une tâche peut être modifier"
+
         # Vérifions que la tâche a été crée
         task_id = 1
         task_exists = utils.item_exists_in_database(
@@ -306,9 +285,3 @@ class TestTableTask(MockBD):
         self.assertFalse(task_exists)
 
             
-        
-        
-               
-        
-        
-        
