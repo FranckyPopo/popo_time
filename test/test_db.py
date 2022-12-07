@@ -2,12 +2,16 @@ from unittest import TestCase
 from datetime import datetime
 
 import mysql.connector
+from dotenv import dotenv_values
 
 from db import (
     _create_database,
     _create_tables,
 )
 import utils
+
+
+ID_CONNEXION_DATABASE = dotenv_values()
 
 
 class TestDataBase(TestCase):
@@ -38,9 +42,9 @@ class MockBD(TestCase):
     def setUp(self):
         MockBD._create_tables()
         self.conn = mysql.connector.connect(
-            host="127.0.0.1",
-            user="root",
-            passwd="pass",
+            host=ID_CONNEXION_DATABASE.get("HOST_DATABASE"),
+            user=ID_CONNEXION_DATABASE.get("USERNAME_DATABASE"),
+            passwd=ID_CONNEXION_DATABASE.get("PASSWORD_DATABASE"),
             database="popo_time_test",
         )
         self.cursor = self.conn.cursor()
@@ -67,9 +71,9 @@ class MockBD(TestCase):
     @classmethod
     def tearDownClass(cls):
         conn = mysql.connector.connect(
-            host="127.1.1.0",
-            user="root",
-            passwd="pass",
+            host=ID_CONNEXION_DATABASE.get("HOST_DATABASE"),
+            user=ID_CONNEXION_DATABASE.get("USERNAME_DATABASE"),
+            passwd=ID_CONNEXION_DATABASE.get("PASSWORD_DATABASE"),
         )
         cursor = conn.cursor()
         cursor.execute("DROP DATABASE popo_time_test;")
@@ -115,10 +119,11 @@ class MockBD(TestCase):
     @classmethod
     def _create_data_base(cls):
         "Cette méthode crée une base de données fictive pour les test unitaire"
+
         conn = mysql.connector.connect(
-            host="127.0.0.1",
-            user="root",
-            passwd="pass",
+            host=ID_CONNEXION_DATABASE.get("HOST_DATABASE"),
+            user=ID_CONNEXION_DATABASE.get("USERNAME_DATABASE"),
+            passwd=ID_CONNEXION_DATABASE.get("PASSWORD_DATABASE"),
         )
         cursor = conn.cursor()
         cursor.execute("CREATE DATABASE IF NOT EXISTS popo_time_test;")
@@ -126,10 +131,11 @@ class MockBD(TestCase):
     @classmethod
     def _create_tables(cls):
         "Cette méthode permet de crée des table fictive pour les test unitaire"
+        
         conn = mysql.connector.connect(
-            host="127.0.0.1",
-            user="root",
-            passwd="pass",
+            host=ID_CONNEXION_DATABASE.get("HOST_DATABASE"),
+            user=ID_CONNEXION_DATABASE.get("USERNAME_DATABASE"),
+            passwd=ID_CONNEXION_DATABASE.get("PASSWORD_DATABASE"),
             database="popo_time_test"
         )
         cursor = conn.cursor()

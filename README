@@ -1,13 +1,16 @@
 # CAHIER DES CHARGES DU PROJET
 - Création des tables timer et task [x]
 - Crée une tâches [x]
-- Modifier une tâche []
-- Supprimer une tâche []
+- Modifier une tâche [x]
+- Supprimer une tâche [x]
 - Crée un fichier d'environement pour stocker les données censible []
-- Voir la liste des tâches
+- Voir la liste des tâches []
+- Refactoriser le code des test et du module popo_time []
 - Lancement du minuteur []
 - Enregistrement des données du miniteur dans la BD []
 - Quand une tâche est supprimer les instances de timer
 qui lui son relié doivent être aussi supprimer []
 - Voir l'historique []
+
+export  PYTHONPATH="/d/Programmation/Documents/popo_time"
 

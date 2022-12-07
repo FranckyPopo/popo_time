@@ -9,15 +9,19 @@ from datetime import datetime
 import time
 
 import mysql.connector
+from dotenv import dotenv_values
+
+
+ID_CONNEXION_DATABASE = dotenv_values()
 
 
 def _create_database():
     "Cette fonction permet de crée la base de donnés"
 
     conn = mysql.connector.connect(
-        host="127.0.0.1",
-        user="root",
-        passwd="pass",
+        host=ID_CONNEXION_DATABASE.get("HOST_DATABASE"),
+        user=ID_CONNEXION_DATABASE.get("USERNAME_DATABASE"),
+        passwd=ID_CONNEXION_DATABASE.get("PASSWORD_DATABASE"),
     )
     cursor = conn.cursor()
     cursor.execute("CREATE DATABASE IF NOT EXISTS popo_time;")
@@ -27,9 +31,9 @@ def _create_tables():
     "Cette fonction permet de crée les différentes tables de la base de donnée"
 
     conn = mysql.connector.connect(
-        host="127.0.0.1",
-        user="root",
-        passwd="pass",
+        host=ID_CONNEXION_DATABASE.get("HOST_DATABASE"),
+        user=ID_CONNEXION_DATABASE.get("USERNAME_DATABASE"),
+        passwd=ID_CONNEXION_DATABASE.get("PASSWORD_DATABASE"),
         database="popo_time"
     )
     cursor = conn.cursor()
@@ -60,9 +64,9 @@ class TaskDataBase:
     """
     def __init__(self):
         self.conn = mysql.connector.connect(
-            host="127.0.0.1",
-            user="root",
-            passwd="pass",
+            host=ID_CONNEXION_DATABASE.get("HOST_DATABASE"),
+            user=ID_CONNEXION_DATABASE.get("USERNAME_DATABASE"),
+            passwd=ID_CONNEXION_DATABASE.get("PASSWORD_DATABASE"),
             database="popo_time",
         )
         self.cursor = self.conn.cursor()
