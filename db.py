@@ -13,7 +13,7 @@ import mysql.connector
 
 def _create_database():
     "Cette fonction permet de crée la base de donnés"
-    
+
     conn = mysql.connector.connect(
         host="127.0.0.1",
         user="root",
@@ -21,11 +21,11 @@ def _create_database():
     )
     cursor = conn.cursor()
     cursor.execute("CREATE DATABASE IF NOT EXISTS popo_time;")
-    
-        
+
+
 def _create_tables():
     "Cette fonction permet de crée les différentes tables de la base de donnée"
-    
+
     conn = mysql.connector.connect(
         host="127.0.0.1",
         user="root",
@@ -41,7 +41,7 @@ def _create_tables():
             date_created DATETIME NOT NULL,
             date_updated DATETIME NOT NULL
         );
-        
+
         CREATE TABLE IF NOT EXISTS timer (
             id INT AUTO_INCREMENT PRIMARY KEY,
             minutes INT NOT NULL,
@@ -51,11 +51,11 @@ def _create_tables():
         );
         """
     )
-    
+
 
 class TaskDataBase:
     """
-    Cette class permet d'éffectuer toute 
+    Cette class permet d'éffectuer toute
     les opétations CRUD de la table task
     """
     def __init__(self):
@@ -64,30 +64,30 @@ class TaskDataBase:
             user="root",
             passwd="pass",
             database="popo_time",
-        )   
+        )
         self.cursor = self.conn.cursor()
-        
+
     def task_add(self, task_name: str):
         """
-        Cette méthode permet d'inserer 
+        Cette méthode permet d'inserer
         de nouvelle tâche à la table task
 
         Args:
-            task_name (str): Ce paramétre represente 
+            task_name (str): Ce paramétre represente
             le nom de la tâche à ajouter
         """
         from popo_time import ProgramMenu
-        
+
         if not task_name:
             print("Veuillez entrer un nom de tâche valide !")
             time.sleep(1)
             return ProgramMenu().task_add()
-        
+
         date_created = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         date_updated = date_created
         value = (task_name, date_created, date_updated)
-        
-        try: 
+
+        try:
             self.cursor.execute(
                 f"""
                 INSERT INTO task (
@@ -108,23 +108,23 @@ class TaskDataBase:
             self.conn.close()
             time.sleep(1)
             ProgramMenu().program_start()
-        
+
     def task_modify(self, task_id: int, new_name_task: str):
         """
-        Cette méthode permet de modifier 
+        Cette méthode permet de modifier
         une entré dans la table task
 
         Args:
             task_id (int): Ce pramètre represente l'identifiant de la
             tâche modifier
-            new_name_task (str): Ce pramètre represente le nom de la 
+            new_name_task (str): Ce pramètre represente le nom de la
             nouvelle tâche
-        """        
+        """
         from popo_time import ProgramMenu
-        
+
         date_updated = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         value = (new_name_task, date_updated, task_id)
-        
+
         self.cursor.execute(
             f"""
             UPDATE task SET name = %s, date_updated = %s
@@ -135,9 +135,15 @@ class TaskDataBase:
         self.conn.commit()
         self.conn.close()
 
-            
-        
-        
+    def task_delete(self, task_id):
+        self.cursor.execute(
+            "DELETE FROM task WHERE id = %s",
+            (task_id,)
+        )
+        self.conn.commit()
+        print("La tâche à été supprimer avec success !")
+
+
 if __name__ == "__main__":
     _create_database()
     _create_tables()

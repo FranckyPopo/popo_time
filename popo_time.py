@@ -43,8 +43,8 @@ class ProgramMenu:
         options = {
             "1": self.task_add, 
             "2": self.task_modify, 
+            "3": self.task_delete, 
         }
-        
         try:
             if option_number:
                 options.get(option_number)()
@@ -64,11 +64,22 @@ class ProgramMenu:
             self._throw_an_option("1")
         self.task_data_base.task_add(task_name)
         
-    def task_modify(self):
-        # Affichage de la liste des tâches
+    def display_list_of_task(self):
+        "Cette méthode affiche la liste des tâches"
+        
+        time.sleep(1)
         tasks = utils.get_data_from_database(self.name_database, self.name_table)
         for task in tasks:
-            print(f"ID: {task[0]}, nom de la tâche: {task[1]}")
+            print(f"ID: {task[0]}, nom de la tâche: {task[1]}")            
+    
+    def task_modify(self):
+        tasks = utils.get_data_from_database(self.name_database, self.name_table)
+        if tasks:
+            # Affichage de la liste des tâches
+            self.display_list_of_task()
+        else:
+            print("La liste des tâche est vide !")
+            self.program_start()
         
         # Vérifions que l'ID existe
         task_id = input("Veuillez entrer l'ID de la tâche à modifier: ")
@@ -93,3 +104,31 @@ class ProgramMenu:
             self.task_data_base.task_modify(task_id, new_name_task)
             print("Tâche modifier avec success")
             ProgramMenu().program_start()
+            
+    def task_delete(self):
+        tasks = utils.get_data_from_database(self.name_database, self.name_table)
+        if tasks:
+            # Affichage de la liste des tâches
+            self.display_list_of_task()
+        else:
+            print("La liste des tâche est vide !")
+            self.program_start()
+
+        task_id = input("Veuillez entrer l'ID de la tâche à supprimer: ")
+        try:
+            task_exists = utils.item_exists_in_database(
+                "popo_time",
+                "task",
+                task_id
+            )
+        except mysql.connector.errors.ProgrammingError:
+            print("Aucune tâche est relier a cet identifiant !")
+        else:
+            if task_exists:
+                self.task_data_base.task_delete(task_id)
+            else:
+                print("Aucune tâche est relier a cet identifiant !")
+        
+        
+        
+        
