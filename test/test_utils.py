@@ -76,6 +76,22 @@ class TestUtils(MockBD):
             "Le type de la date de mise ajout n'est un datatime"
         )
         
+    def test_item_exists_in_database(self):
+        "Cette méthode de test vérifie qu'une entré existe"
+        
+        task_1exists = utils.item_exists_in_database(
+            "popo_time_test", 
+            "task_test",
+            "1"
+        )
+        task_5_exists = utils.item_exists_in_database(
+            "popo_time_test", 
+            "task_test",
+            "5"
+        )
+        self.assertTrue(task_1exists)
+        self.assertFalse(task_5_exists)
+              
     
         
         

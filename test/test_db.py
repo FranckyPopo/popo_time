@@ -49,6 +49,8 @@ class MockBD(TestCase):
         path_test = [
             "test_utils.TestUtils.test_get_data_from_database",
             "test_utils.TestUtils.test_get_item_from_database",
+            "test_utils.TestUtils.test_item_exists_in_database",
+            "test_db.TestTableTask.test_task_delete",
         ]
         if test_in_progress in path_test:
             self.adding_data_to_tables()
@@ -259,4 +261,48 @@ class TestTableTask(MockBD):
             task_date_updated,
             "Les dates de mise ajout ne correspondent pas"
         )
+        
+    def test_task_delete(self):
+        "Cette méthode de test vérifie qu'une tâche a bien été supprimé"
+        
+        # Vérifions le nombre de tâche
+        tasks = utils.get_data_from_database(
+            "popo_time_test",
+            "task_test",
+        )
+        self.assertEqual(len(tasks), 3)
+
+        # Supprimons une tâche
+        task_2 = tasks[1]
+        task_2_id = task_2[0]
+        self.cursor.execute(
+            """
+            DELETE FROM task_test WHERE id = %s;
+            """,
+            (task_2_id,)
+        )
+        self.conn.commit()
+        
+        # Revérifions le nombre de tâche 
+        # Pour avoir la comfirmations qu'une tâche à été supprimer 
+        tasks = utils.get_data_from_database(
+            "popo_time_test",
+            "task_test",
+        )
+        self.assertEqual(len(tasks), 2)
+        
+        # Vérifions que c'est bien la tâche 2 qui à été supprimer
+        task_exists = utils.item_exists_in_database(
+            "popo_time_test",
+            "task_test",
+            task_2_id
+        )
+        self.assertFalse(task_exists)
+
+            
+        
+        
+               
+        
+        
         
